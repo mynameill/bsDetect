@@ -1,0 +1,4 @@
+bsDetect
+========
+
+detect browser

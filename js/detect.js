@@ -25,7 +25,7 @@ function DETECT(W, doc){
         }
         function safari(){
             if( agent.indexOf( 'safari' ) < 0 ) return;
-            return browser = 'safari', bVersion = parseFloat( /safari\/([\d]+)/.exec( agent )[1] );
+            return browser = 'safari', bVersion = parseFloat( /version\/([\d]+)/.exec( agent )[1] );
         }
         function opera(){
             if( agent.indexOf( 'opera' ) < 0 ) return;
@@ -46,8 +46,8 @@ function DETECT(W, doc){
             device = i == 'ipad' ? 'tablet' : 'mobile', browser = os = i;
             if( i = /os ([\d_]+)/.exec( agent ) ) i = i[1].split('_'), osVersion = parseFloat( i[0] + '.' + i[1] );
             else osVersion = 0;
-            if( i = /mobile\/([\S]+)/.exec( agent ) ) bVersion = parseFloat( i[1] );
-            naver() || chrome() || firefox() || opera();
+            if( i = /Version\/([\S]+)/.exec( agent ) ) bVersion = parseFloat( i[1] );
+            naver() || chrome() || firefox() || opera() || safari();
         }else{
             (function(){
                 var plug, t0, e;
@@ -96,16 +96,16 @@ function DETECT(W, doc){
         else keyframe = null;
     }
     return {
-        'device':device, 'browser':browser, 'browserVer':bVersion, 'os':os, 'osVer':osVersion, 'flash':flash, 'sony':agent.indexOf( 'sony' ) > -1,
+        'device':device, 'browser':browser, 'browserVer':bVersion, 'os':os, 'osVer':osVersion, 'flash':flash, 'sony':agent.indexOf( 'sony' ) > -1 ? 1 : 0,
         //dom
         root:b.scrollHeight ? b : doc.documentElement,
         scroll:doc.documentElement && typeof doc.documentElement.scrollLeft == 'number' ? 'scroll' : 'page',
-        insertBefore:div.insertBefore, png:browser == 'ie' && bVersion > 7, 
+        insertBefore:div.insertBefore, png:( browser == 'ie' && bVersion > 7 ) ? 1 : 0, 
         opacity:div.style.opacity == '0.55' ? 1 : 0, text:div.textContent ? 'textContent' : div.innerText ? 'innerText' : 'innerHTML',
         cstyle:doc.defaultView && doc.defaultView.getComputedStyle,
         //css3
         cssPrefix:cssPrefix, stylePrefix:stylePrefix, filterFix:browser == 'ie' && bVersion == 8 ? ';-ms-' : ';',
-        transition:stylePrefix + 'Transition' in bStyle || 'transition' in bStyle, transform3D:transform3D, keyframe:keyframe,
+        transition:( stylePrefix + 'Transition' in bStyle || 'transition' in bStyle ) ? 1 : 0, transform3D:transform3D, keyframe:keyframe,
         //html5
         canvas:c, canvasText:c && c.getContext('2d').fillText,
         audio:a,
@@ -119,9 +119,9 @@ function DETECT(W, doc){
         videoWebm:v && v.canPlayType( 'video/webm; codecs="vp8,mp4a.40.2"' ).indexOf( 'no' ) == -1 ? 1 : 0,
         videH264:v && v.canPlayType( 'video/mp4; codecs="avc1.42E01E,m4a.40.2"' ).indexOf( 'no' ) == -1 ? 1 : 0,
         videoTeora:v && v.canPlayType( 'video/ogg; codecs="theora,vorbis"' ).indexOf( 'no' ) == -1 ? 1 : 0,
-        local:W.localStorage && 'setItem' in localStorage,
-        geo:navigator.geolocation, worker:W.Worker, file:W.FileReader, message:W.postMessage,
-        history:'pushState' in history, offline:W.applicationCache,
-        db:W.openDatabase, socket:W.WebSocket
+        local:( W.localStorage && 'setItem' in localStorage ) ? 1 : 0,
+        geo:navigator.geolocation, worker:W.Worker ? 1 : 0, file:W.FileReader ? 1 : 0, message:W.postMessage,
+        history:( 'pushState' in history ) ? 1 : 0, offline:W.applicationCache ? 1 : 0,
+        db:W.openDatabase ? 1 : 0, socket:W.WebSocket ? 1 : 0
     };
 }

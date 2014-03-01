@@ -105,22 +105,22 @@ function DETECT(W, doc){
         cstyle:doc.defaultView && doc.defaultView.getComputedStyle,
         //css3
         cssPrefix:cssPrefix, stylePrefix:stylePrefix, filterFix:browser == 'ie' && bVersion == 8 ? ';-ms-' : ';',
-        transition:( stylePrefix + 'Transition' in bStyle || 'transition' in bStyle ) ? 1 : 0, transform3D:transform3D, keyframe:keyframe,
+        transition:( stylePrefix + 'Transition' in bStyle || 'transition' in bStyle ) ? 1 : 0, transform3D:transform3D, keyframe:keyframe ? 1 : 0,
         //html5
-        canvas:c, canvasText:c && c.getContext('2d').fillText,
-        audio:a,
+        canvas:c ? 1 : 0, canvasText:( c && c.getContext('2d').fillText ) ? 1 : 0,
+        audio:a ? 1 : 0,
         audioMp3:a && a.canPlayType('audio/mpeg;').indexOf('no') < 0 ? 1 : 0,
         audioOgg:a && a.canPlayType('audio/ogg;').indexOf('no') < 0 ? 1 : 0,
         audioWav:a && a.canPlayType('audio/wav;').indexOf('no') < 0 ? 1 : 0,
         audioMp4:a && a.canPlayType('audio/mp4;').indexOf('no') < 0 ? 1 : 0,
-        video:v,
+        video:v ? 1 : 0,
         videoCaption:'track' in doc.createElement('track') ? 1 : 0,
         videoPoster:v && 'poster' in v ? 1 : 0,
         videoWebm:v && v.canPlayType( 'video/webm; codecs="vp8,mp4a.40.2"' ).indexOf( 'no' ) == -1 ? 1 : 0,
         videH264:v && v.canPlayType( 'video/mp4; codecs="avc1.42E01E,m4a.40.2"' ).indexOf( 'no' ) == -1 ? 1 : 0,
         videoTeora:v && v.canPlayType( 'video/ogg; codecs="theora,vorbis"' ).indexOf( 'no' ) == -1 ? 1 : 0,
         local:( W.localStorage && 'setItem' in localStorage ) ? 1 : 0,
-        geo:navigator.geolocation, worker:W.Worker ? 1 : 0, file:W.FileReader ? 1 : 0, message:W.postMessage,
+        geo:( navigator.geolocation ) ? 1 : 0, worker:W.Worker ? 1 : 0, file:W.FileReader ? 1 : 0, message:W.postMessage ? 1 : 0,
         history:( 'pushState' in history ) ? 1 : 0, offline:W.applicationCache ? 1 : 0,
         db:W.openDatabase ? 1 : 0, socket:W.WebSocket ? 1 : 0
     };

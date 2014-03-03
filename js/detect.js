@@ -47,6 +47,8 @@ function DETECT(W, doc){
             if( i = /os ([\d_]+)/.exec( agent ) ) i = i[1].split('_'), osVersion = parseFloat( i[0] + '.' + i[1] );
             else osVersion = 0;
             if( i = /version\/([\S]+)/.exec( agent ) ) bVersion = parseFloat( i[1] );
+            else if( i = /webkit\/([\d]+)/.exec( agent ) ) bVersion = parseFloat( i[1] );
+            else bVersion = 0;
             naver() || chrome() || firefox() || opera() || safari();
         }else{
             (function(){

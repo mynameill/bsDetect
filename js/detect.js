@@ -102,7 +102,7 @@ function DETECT(W, doc){
         scroll:doc.documentElement && typeof doc.documentElement.scrollLeft == 'number' ? 'scroll' : 'page',
         insertBefore:div.insertBefore, png:( browser == 'ie' && bVersion > 7 ) ? 1 : 0, 
         opacity:div.style.opacity == '0.55' ? 1 : 0, text:div.textContent ? 'textContent' : div.innerText ? 'innerText' : 'innerHTML',
-        cstyle:doc.defaultView && doc.defaultView.getComputedStyle,
+        cstyle:( doc.defaultView && doc.defaultView.getComputedStyle ) ? 1 : 0,
         //css3
         cssPrefix:cssPrefix, stylePrefix:stylePrefix, filterFix:browser == 'ie' && bVersion == 8 ? ';-ms-' : ';',
         transition:( stylePrefix + 'Transition' in bStyle || 'transition' in bStyle ) ? 1 : 0, transform3D:transform3D, keyframe:keyframe ? 1 : 0,

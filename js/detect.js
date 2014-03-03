@@ -17,7 +17,7 @@ function DETECT(W, doc){
         function chrome(){
             var i;
             if( agent.indexOf( i = 'chrome' ) < 0 && agent.indexOf( i = 'crios' ) < 0 ) return;
-            return browser = 'chrome', bVersion = parseFloat( ( i == 'chrome' ? /chrome\/([\d]+)/ : /crios\/([\d]+)/ ).exec( agent )[1] );
+            return browser = 'chrome', bVersion = parseFloat( ( i == 'chrome' ? /chrome\/([\d]+)/ : /webkit\/([\d]+)/ ).exec( agent )[1] );
         }
         function firefox(){
             if( agent.indexOf( 'firefox' ) < 0 ) return;
@@ -39,14 +39,14 @@ function DETECT(W, doc){
             i = /android ([\d.]+)/.exec( agent );
             if( i ) i = i[1].split('.'), osVersion = parseFloat( i[0] + '.' + i[1] );
             else osVersion = 0;
-            i = /safari\/([\d.]+)/.exec( agent );
+            i = /version\/([\d.]+)/.exec( agent );
             if( i ) bVersion = parseFloat( i[1] );
             naver() || chrome() || firefox() || opera();
         }else if( agent.indexOf( i = 'ipad' ) > -1 || agent.indexOf( i = 'iphone' ) > -1 ){
             device = i == 'ipad' ? 'tablet' : 'mobile', browser = os = i;
             if( i = /os ([\d_]+)/.exec( agent ) ) i = i[1].split('_'), osVersion = parseFloat( i[0] + '.' + i[1] );
             else osVersion = 0;
-            if( i = /Version\/([\S]+)/.exec( agent ) ) bVersion = parseFloat( i[1] );
+            if( i = /version\/([\S]+)/.exec( agent ) ) bVersion = parseFloat( i[1] );
             naver() || chrome() || firefox() || opera() || safari();
         }else{
             (function(){

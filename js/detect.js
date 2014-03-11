@@ -108,6 +108,7 @@ function DETECT(W, doc){
         //css3
         cssPrefix:cssPrefix, stylePrefix:stylePrefix, filterFix:browser == 'ie' && bVersion == 8 ? ';-ms-' : ';',
         transition:( stylePrefix + 'Transition' in bStyle || 'transition' in bStyle ) ? 1 : 0, transform3D:transform3D, keyframe:keyframe ? 1 : 0,
+        transform:stylePrefix + ('Transform' in bStyle || 'transform' in bStyle ) ? 1 : 0,
         //html5
         canvas:c ? 1 : 0, canvasText:( c && c.getContext('2d').fillText ) ? 1 : 0,
         audio:a ? 1 : 0,

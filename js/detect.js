@@ -73,6 +73,7 @@ function DETECT(W, doc){
                 chrome() || firefox() || safari() || opera();
             }else{
                 os = app.indexOf( 'x11' ) > -1 ? 'unix' : app.indexOf( 'linux' ) > -1 ? 'linux' : 0;
+                osVersion = 0;
                 chrome() || firefox();
             }
         }

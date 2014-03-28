@@ -45,10 +45,10 @@ bs( function() {
     }
 
     bsTest.apply( null, arg );
-
+    
     bsTest('DETECT jQuery.browser check',
         'browser', ( jb.name == 'webkit' || jb.name == 'android' ) ? bsTest.IN( 'chrome', 'iphone', 'ipad', 'android', 'androidTablet', 'naver' ) : jqueryStr( jb.name ), detect.browser,
-        'os', jb.platform, detect.os,
+        'os', ( jb.platform == 'unix' ) ? bsTest.IN( 'unix', 'linux' ) : jb.platform || 'unix', detect.os,
         'browserVer', jb.versionNumber, detect.browserVer
     );
 } );

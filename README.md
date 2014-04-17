@@ -7,7 +7,7 @@ bsDetect
 
 # License
 
-bsJS는 <a href='http://opensource.org/licenses/MIT' target='_blank'><b>MIT 라이선스</b></a> 또는 <a href='http://www.gnu.org/licenses/gpl-2.0.html' target='_blank'><b>GPL v2 라이선스</b></a>로 배포되는 Open Source Software 입니다.
+bsJS는 <a href='http://opensource.org/licenses/BSD-3-Clause' target='_blank'><b>BSD 라이선스</b></a>로 배포되는 Open Source Software 입니다.
 
 
 # Contact us

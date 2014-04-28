@@ -3,7 +3,7 @@ bsDetect
 
 ## test
 
-<a href='http://projectbs.github.io/bsJSTest/test/bs.detect.html' target='_blank'>bs.detect.html</a>
+<a href='http://projectbs.github.io/bsJSTest/0.4/bs.detect.html' target='_blank'>bs.detect.html</a>
 
 # License
 

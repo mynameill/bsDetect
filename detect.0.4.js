@@ -10,16 +10,16 @@ var bs = bs || {};
             ie = function(){
                 if( agent.indexOf('msie') < 0 && agent.indexOf('trident') < 0 ) return;
                 if( agent.indexOf('iemobile') > -1 ) os = 'winMobile';
-                return browser = 'ie', bv = agent.indexOf('msie') < 0 ? 11 : parseFloat(/msie ([\d]+)/.exec(agent)[1]);
+                return browser = 'ie', bv = agent.indexOf('msie 7') > -1 && agent.indexOf('trident') > -1 ? -1 : agent.indexOf('msie') < 0 ? 11 : parseFloat(/msie ([\d]+)/.exec(agent)[1]);
             },
             chrome = function(){
                 if( agent.indexOf( i = 'chrome' ) < 0 && agent.indexOf( i = 'crios' ) < 0 ) return;
                 return browser = 'chrome', bv = parseFloat( ( i == 'chrome' ? /chrome\/([\d]+)/ : /crios\/([\d]+)/ ).exec(agent)[1] );
             },
-            firefox = function(){return agent.indexOf('firefox') < 0 ? 0 : browser = 'firefox', bv = /firefox\/([\d]+)/.exec(agent), bv==null ? 0: parseFloat(/firefox\/([\d]+)/.exec(agent)[1]);},
-            safari = function(){return agent.indexOf('safari') < 0 ? 0 : browser = 'safari', bv = parseFloat(/safari\/([\d]+)/.exec(agent)[1]);},
-            opera = function(){return agent.indexOf('opera') < 0 ? 0 : browser = 'opera', bv = parseFloat( /version\/([\d]+)/.exec(agent)[1] );},
-            naver = function(){return agent.indexOf( 'naver' ) < 0 ? 0 : browser = 'naver';};
+            firefox = function(){return agent.indexOf('firefox') < 0 ? 0 : ( browser = 'firefox', bv = parseFloat(/firefox\/([\d]+)/.exec(agent)[1]) );},
+            safari = function(){return agent.indexOf('safari') < 0 ? 0 : ( browser = 'safari', bv = parseFloat(/safari\/([\d]+)/.exec(agent)[1]) );},
+            opera = function(){return agent.indexOf('opera') < 0 ? 0 : ( browser = 'opera', bv = parseFloat(/version\/([\d]+)/.exec(agent)[1]) );},
+            naver = function(){return agent.indexOf('naver') < 0 ? 0 : browser = 'naver';};
 
         if( !detect ) detect = {};
         if( agent.indexOf('android') > -1 ){
@@ -77,7 +77,9 @@ var bs = bs || {};
         div.innerHTML = '<div data-test-ok="234">a</div>',
             div = div.getElementsByTagName( 'div' )[0];
         switch( detect.browser ){
-            case'ie': cssPrefix = '-ms-', stylePrefix = 'ms'; transform3D = detect.browserVer > 9 ? 1 : 0;
+            case'ie':
+                if( detect.browserVer == -1 ) detect.browserVer = !c ? 8 : !( 'msTransition' in bStyle ) && !( 'transition' in bStyle ) ? 9 : c.getContext('webgl') || c.getContext("experimental-webgl") ? 11 : 10;
+                cssPrefix = '-ms-', stylePrefix = 'ms'; transform3D = detect.browserVer > 9 ? 1 : 0;
                 if( detect.browserVer == 6 ) doc.execCommand( 'BackgroundImageCache', false, true ), bStyle.position = 'relative';
                 break;
             case'firefox': cssPrefix = '-moz-', stylePrefix = 'Moz'; transform3D = 1; break;

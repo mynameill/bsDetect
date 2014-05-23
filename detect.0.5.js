@@ -18,7 +18,7 @@ var bs = bs || {};
             },
             firefox = function(){return agent.indexOf('firefox') < 0 ? 0 : ( browser = 'firefox', bv = parseFloat(/firefox\/([\d]+)/.exec(agent)[1]) );},
             safari = function(){return agent.indexOf('safari') < 0 ? 0 : ( browser = 'safari', bv = parseFloat(/safari\/([\d]+)/.exec(agent)[1]) );},
-            opera = function(){var i; return (agent.indexOf( i = 'opera') > -1 || agent.indexOf( i = 'opr' ) > -1 ) ? ( browser = 'opera', bv = ( i == 'opera' ) ? parseFloat(/version\/([\d]+)/.exec(agent)[1]) : parseFloat(/opr\/([\d]+)/.exec(agent)[1]) ) : 0;},
+            opera = function(){var i; return (agent.indexOf( i = 'opera') < 0 && agent.indexOf( i = 'opr' ) < 0 ) ? 0 : ( browser = 'opera', bv = ( i == 'opera' ) ? parseFloat(/version\/([\d]+)/.exec(agent)[1]) : parseFloat(/opr\/([\d]+)/.exec(agent)[1]) );},
             naver = function(){return agent.indexOf('naver') < 0 ? 0 : browser = 'naver';};
         if( !detect ) detect = {};
         if( agent.indexOf('android') > -1 ){

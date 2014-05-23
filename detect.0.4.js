@@ -18,7 +18,6 @@ var bs = bs || {};
             },
             firefox = function(){return agent.indexOf('firefox') < 0 ? 0 : ( browser = 'firefox', bv = parseFloat(/firefox\/([\d]+)/.exec(agent)[1]) );},
             safari = function(){return agent.indexOf('safari') < 0 ? 0 : ( browser = 'safari', bv = parseFloat(/safari\/([\d]+)/.exec(agent)[1]) );},
-//            opera = function(){return agent.indexOf('opera') < 0 ? 0 : ( browser = 'opera', bv = parseFloat(/version\/([\d]+)/.exec(agent)[1]) );},
             opera = function(){return (agent.indexOf('opera') < 0 && agent.indexOf('opr') < 0 ) ? 0 : ( browser = 'opera', bv = parseFloat(/version\/([\d]+)/.exec(agent)[1]) || parseFloat(/opr\/([\d]+)/.exec(agent)[1]) );},
             naver = function(){return agent.indexOf('naver') < 0 ? 0 : browser = 'naver';};
         if( !detect ) detect = {};
@@ -29,13 +28,13 @@ var bs = bs || {};
             if( i = /android ([\d.]+)/.exec(agent) ) i = i[1].split('.'), osv = parseFloat( i[0] + '.' + i[1] );
             else osv = 0;
             if( i = /safari\/([\d.]+)/.exec(agent) ) bv = parseFloat(i[1]);
-            naver() || chrome() || firefox() || opera();
+            naver() || opera() || chrome() || firefox();
         }else if( agent.indexOf( i = 'ipad' ) > -1 || agent.indexOf( i = 'iphone' ) > -1 ){
             device = i == 'ipad' ? 'tablet' : 'mobile', browser = os = i;
             if( i = /os ([\d_]+)/.exec(agent) ) i = i[1].split('_'), osv = parseFloat( i[0] + '.' + i[1] );
             else osv = 0;
             if( i = /mobile\/([\S]+)/.exec(agent) ) bv = parseFloat(i[1]);
-            naver() || chrome() || firefox() || opera();
+            naver() || opera() || chrome() || firefox();
         }else{
             (function(){
                 var plug, t0, e;
@@ -51,12 +50,12 @@ var bs = bs || {};
                 else if( agent.indexOf( i + '6.1' ) > -1 ) osv = '7';
                 else if( agent.indexOf( i + '6.2' ) > -1 ) osv = '8';
                 else if( agent.indexOf( i + '6.3' ) > -1 ) osv = '8.1';
-                ie() || chrome() || firefox() || safari() || opera();
+                ie() || opera() || chrome() || firefox() || safari();
             }else if( platform.indexOf('mac') > -1 ){
                 os = 'mac',
                     i = /os x ([\d._]+)/.exec(agent)[1].replace( '_', '.' ).split('.'),
                     osv = parseFloat( i[0] + '.' + i[1] ),
-                    chrome() || firefox() || safari() || opera();
+                    opera() || chrome() || firefox() || safari();
             }else{
                 os = app.indexOf('x11') > -1 ? 'unix' : app.indexOf('linux') > -1 ? 'linux' : 0,
                     chrome() || firefox();

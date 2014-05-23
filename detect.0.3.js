@@ -41,7 +41,7 @@ function DETECT(W, doc){
             else osVersion = 0;
             i = /version\/([\d.]+)/.exec( agent );
             if( i ) bVersion = parseFloat( i[1] );
-            naver() || chrome() || firefox() || opera();
+            naver() || opera() || chrome() || firefox();
         }else if( agent.indexOf( i = 'ipad' ) > -1 || agent.indexOf( i = 'iphone' ) > -1 ){
             device = i == 'ipad' ? 'tablet' : 'mobile', browser = os = i;
             if( i = /os ([\d_]+)/.exec( agent ) ) i = i[1].split('_'), osVersion = parseFloat( i[0] + '.' + i[1] );
@@ -49,7 +49,7 @@ function DETECT(W, doc){
             if( i = /version\/([\S]+)/.exec( agent ) ) bVersion = parseFloat( i[1] );
             else if( i = /webkit\/([\d]+)/.exec( agent ) ) bVersion = parseFloat( i[1] );
             else bVersion = 0;
-            naver() || chrome() || firefox() || opera() || safari();
+            naver() || opera() || chrome() || firefox() || safari();
         }else{
             (function(){
                 var plug, t0, e;
@@ -65,12 +65,12 @@ function DETECT(W, doc){
                 else if( agent.indexOf( i + '6.1' ) > -1 ) osVersion = '7';
                 else if( agent.indexOf( i + '6.2' ) > -1 ) osVersion = '8';
                 else if( agent.indexOf( i + '6.3' ) > -1 ) osVersion = '8.1';
-                ie() || chrome() || firefox() || safari() || opera();
+                ie() || opera() || chrome() || firefox() || safari();
             }else if( platform.indexOf( 'mac' ) > -1 ){      
                 os = 'mac';
                 i = /os x ([\d._]+)/.exec(agent)[1].replace( '_', '.' ).split('.');
                 osVersion = parseFloat( i[0] + '.' + i[1] );
-                chrome() || firefox() || safari() || opera();
+                opera() || chrome() || firefox() || safari();
             }else{
                 os = app.indexOf( 'x11' ) > -1 ? 'unix' : app.indexOf( 'linux' ) > -1 ? 'linux' : 0;
                 osVersion = 0;

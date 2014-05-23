@@ -28,8 +28,8 @@ function DETECT(W, doc){
             return browser = 'safari', bVersion = parseFloat( /version\/([\d]+)/.exec( agent )[1] );
         }
         function opera(){
-            if( agent.indexOf( 'opera' ) < 0 ) return;
-            return browser = 'opera', bVersion = parseFloat( /version\/([\d]+)/.exec( agent )[1] );
+            if( agent.indexOf( 'opera' ) < 0 && agent.indexOf( 'opr' ) < 0 ) return;
+            return browser = 'opera', bVersion = parseFloat( /version\/([\d]+)/.exec( agent )[1] || parseFloat(/opr\/([\d]+)/.exec(agent)[1]) );
         }
         function naver(){if( agent.indexOf( 'naver' ) > -1 ) return browser = 'naver';}
         if( agent.indexOf( 'android' ) > -1 ){

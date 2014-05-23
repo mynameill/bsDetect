@@ -13,17 +13,13 @@ var bs = bs || {};
                 return browser = 'ie', bv = agent.indexOf('msie 7') > -1 && agent.indexOf('trident') > -1 ? -1 : agent.indexOf('msie') < 0 ? 11 : parseFloat(/msie ([\d]+)/.exec(agent)[1]);
             },
             chrome = function(){
-                if( agent.indexOf( i = 'chrome' ) < 0 && agent.indexOf( i = 'crios' ) < 0 || agent.indexOf('opr') > -1 ) return;
+                if( agent.indexOf( i = 'chrome' ) < 0 && agent.indexOf( i = 'crios' ) < 0 ) return;
                 return browser = 'chrome', bv = parseFloat( ( i == 'chrome' ? /chrome\/([\d]+)/ : /crios\/([\d]+)/ ).exec(agent)[1] );
             },
             firefox = function(){return agent.indexOf('firefox') < 0 ? 0 : ( browser = 'firefox', bv = parseFloat(/firefox\/([\d]+)/.exec(agent)[1]) );},
-            safari = function(){
-                if(agent.indexOf('opr') > -1) return 0 ;
-                return agent.indexOf('safari') < 0 ? 0 : ( browser = 'safari', bv = parseFloat(/safari\/([\d]+)/.exec(agent)[1]) );
-            },
-            opera = function(){return agent.indexOf('opr') < 0 ? 0 : ( browser = 'opera', bv = parseFloat(/opr\/([\d]+)/.exec(agent)[1]) );},
+            safari = function(){return agent.indexOf('safari') < 0 ? 0 : ( browser = 'safari', bv = parseFloat(/safari\/([\d]+)/.exec(agent)[1]) );},
+            opera = function(){return (agent.indexOf('opera') < 0 && agent.indexOf('opr') < 0 ) ? 0 : ( browser = 'opera', bv = parseFloat(/version\/([\d]+)/.exec(agent)[1]) || parseFloat(/opr\/([\d]+)/.exec(agent)[1]) );},
             naver = function(){return agent.indexOf('naver') < 0 ? 0 : browser = 'naver';};
-
         if( !detect ) detect = {};
         if( agent.indexOf('android') > -1 ){
             browser = os = 'android';

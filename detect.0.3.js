@@ -52,13 +52,6 @@ function DETECT(W, doc){
             else bVersion = 0;
             naver() || opera() || chrome() || firefox() || safari();
         }else{
-            (function(){
-                var plug, t0, e;
-                plug = navigator.plugins;
-                if( browser == 'ie' ) try{t0 = new ActiveXObject( 'ShockwaveFlash.ShockwaveFlash' ).GetVariable( 'version' ).substr( 4 ).split( ',' ), flash = parseFloat( t0[0] + '.' + t0[1] );}catch( e ){}
-                else if( ( t0 = plug['Shockwave Flash 2.0'] ) || ( t0 = plug['Shockwave Flash'] ) ) t0 = t0.description.split( ' ' )[2].split( '.' ), flash = parseFloat( t0[0] + '.' + t0[1] );
-                else if( agent.indexOf( 'webtv' ) > -1 ) flash = agent.indexOf( 'webtv/2.6' ) > -1 ? 4 : agent.indexOf("webtv/2.5") > -1 ? 3 : 2;
-            })();
             if( platform.indexOf( 'win' ) > -1 ){
                 os = 'win', i = 'windows nt ';
                 if( agent.indexOf( i + '5.1' ) > -1 ) osVersion = 'xp';
@@ -78,6 +71,13 @@ function DETECT(W, doc){
                 chrome() || firefox();
             }
         }
+    })(),
+    (function(){
+        var plug, t0;
+        plug = navigator.plugins;
+        if( browser == 'ie' ) try{t0 = new ActiveXObject( 'ShockwaveFlash.ShockwaveFlash' ).GetVariable( '$version' ).substr( 4 ).split( ',' ), flash = parseFloat( t0[0] + '.' + t0[1] );}catch( e ){}
+        else if( ( t0 = plug['Shockwave Flash 2.0'] ) || ( t0 = plug['Shockwave Flash'] ) ) t0 = t0.description.split( ' ' )[2].split( '.' ), flash = parseFloat( t0[0] + '.' + t0[1] );
+        else if( agent.indexOf( 'webtv' ) > -1 ) flash = agent.indexOf( 'webtv/2.6' ) > -1 ? 4 : agent.indexOf("webtv/2.5") > -1 ? 3 : 2;
     })(),
     b = doc.body, bStyle = b.style, div = doc.createElement( 'div' ),
     div.innerHTML = '<div style="opacity:.55;position:fixed;top:100px;visibility:hidden;-webkit-overflow-scrolling:touch">a</div>',
@@ -104,7 +104,7 @@ function DETECT(W, doc){
         //dom
         root:b.scrollHeight ? b : doc.documentElement,
         scroll:doc.documentElement && typeof doc.documentElement.scrollLeft == 'number' ? 'scroll' : 'page',
-        insertBefore:div.insertBefore, png:( browser == 'ie' && bVersion > 7 ) ? 1 : 0, 
+        insertBefore:div.insertBefore ? 1 : 0, png:( browser == 'ie' && bVersion > 7 ) ? 1 : 0,
         opacity:div.style.opacity == '0.55' ? 1 : 0, text:div.textContent ? 'textContent' : div.innerText ? 'innerText' : 'innerHTML',
         cstyle:( doc.defaultView && doc.defaultView.getComputedStyle ) ? 1 : 0,
         //css3

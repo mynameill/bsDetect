@@ -36,13 +36,6 @@ var bs = bs || {};
             if( i = /mobile\/([\S]+)/.exec(agent) ) bv = parseFloat(i[1]);
             naver() || opera() || chrome() || firefox();
         }else{
-            (function(){
-                var plug, t0, e;
-                plug = navi.plugins;
-                if( browser == 'ie' ) try{t0 = new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('version').substr(4).split(','), flash = parseFloat( t0[0] + '.' + t0[1] );}catch(e){}
-                else if( ( t0 = plug['Shockwave Flash 2.0'] ) || ( t0 = plug['Shockwave Flash'] ) ) t0 = t0.description.split(' ')[2].split('.'), flash = parseFloat( t0[0] + '.' + t0[1] );
-                else if( agent.indexOf('webtv') > -1 ) flash = agent.indexOf('webtv/2.6') > -1 ? 4 : agent.indexOf("webtv/2.5") > -1 ? 3 : 2;
-            })();
             if( platform.indexOf('win') > -1 ){
                 os = 'win', i = 'windows nt ';
                 if( agent.indexOf( i + '5.1' ) > -1 ) osv = 'xp';
@@ -61,13 +54,20 @@ var bs = bs || {};
                     chrome() || firefox();
             }
         }
+        (function(){
+            var plug, t0;
+            plug = navi.plugins;
+            if( browser == 'ie' ) try{t0 = new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version').substr(4).split(','), flash = parseFloat( t0[0] + '.' + t0[1] );}catch(e){}
+            else if( ( t0 = plug['Shockwave Flash 2.0'] ) || ( t0 = plug['Shockwave Flash'] ) ) t0 = t0.description.split(' ')[2].split('.'), flash = parseFloat( t0[0] + '.' + t0[1] );
+            else if( agent.indexOf('webtv') > -1 ) flash = agent.indexOf('webtv/2.6') > -1 ? 4 : agent.indexOf("webtv/2.5") > -1 ? 3 : 2;
+        })();
         for( i in t0 = {
-            'device':device, 'browser':browser, 'browserVer':bv, 'os':os, 'osVer':osv, 'flash':flash, 'sony':agent.indexOf('sony') > -1
+            'device':device, 'browser':browser, 'browserVer':bv, 'os':os, 'osVer':osv, 'flash':flash, 'sony':agent.indexOf('sony') > -1 ? 1 : 0
         } ) if( t0.hasOwnProperty(i) ) detect[i] = t0[i];
         return detect;
     };
     detectDOM = function( W, detect ){
-        var doc = W['document'], cssPrefix, stylePrefix, transform3D, keyframe = W['CSSRule'],
+        var doc = W['document'], cssPrefix, stylePrefix, transform3D, keyframe = W['CSSRule'], docMode = 0,
             b = doc.body, bStyle = b.style, div = doc.createElement('div'),
             c = doc.createElement('canvas'), a = doc.createElement('audio'), v = doc.createElement('video'), k, t0;
 
@@ -77,8 +77,9 @@ var bs = bs || {};
             div = div.getElementsByTagName( 'div' )[0];
         switch( detect.browser ){
             case'ie':
-                if( detect.browserVer == -1 ) detect.browserVer = !c ? 8 : !( 'msTransition' in bStyle ) && !( 'transition' in bStyle ) ? 9 : c.getContext('webgl') || c.getContext("experimental-webgl") ? 11 : 10;
+                if( detect.browserVer == -1 ) detect.browserVer = !c['getContext'] ? 8 : !( 'msTransition' in bStyle ) && !( 'transition' in bStyle ) ? 9 : c.getContext('webgl') || c.getContext('experimental-webgl') ? 11 : 10;
                 cssPrefix = '-ms-', stylePrefix = 'ms'; transform3D = detect.browserVer > 9 ? 1 : 0;
+                docMode = doc['documentMode'] || 0;
                 if( detect.browserVer == 6 ) doc.execCommand( 'BackgroundImageCache', false, true ), bStyle.position = 'relative';
                 break;
             case'firefox': cssPrefix = '-moz-', stylePrefix = 'Moz'; transform3D = 1; break;
@@ -94,16 +95,17 @@ var bs = bs || {};
         for( k in t0 = {
             //dom
             root:b.scrollHeight ? b : doc.documentElement,
-            scroll:doc.documentElement && typeof doc.documentElement.scrollLeft == 'number' ? 'scroll' : 'page', insertBefore:div.insertBefore,
+            scroll:doc.documentElement && typeof doc.documentElement.scrollLeft == 'number' ? 'scroll' : 'page', insertBefore:div.insertBefore ? 1 : 0,
             text:div.textContent ? 'textContent' : div.innerText ? 'innerText' : 'innerHTML',
-            cstyle:doc.defaultView && doc.defaultView.getComputedStyle,
-            customData:div.dataset && div.dataset.testOk == '234',
+            cstyle:( doc.defaultView && doc.defaultView.getComputedStyle ) ? 1 : 0,
+            customData:( div.dataset && div.dataset.testOk == '234' ) ? 1 : 0,
+            docMode:docMode,
             //css3
             cssPrefix:cssPrefix, stylePrefix:stylePrefix,
-            transition:stylePrefix + 'Transition' in bStyle || 'transition' in bStyle, transform3D:transform3D, keyframe:keyframe,
-            transform:stylePrefix + 'Transform' in bStyle || 'transform' in bStyle,
+            transition:( stylePrefix + 'Transition' in bStyle || 'transition' in bStyle ) ? 1 : 0, transform3D:transform3D, keyframe:keyframe ? 1 : 0,
+            transform:( stylePrefix + 'Transform' in bStyle || 'transform' in bStyle ) ? 1 : 0,
             //html5
-            canvas:c ? 1 : 0, canvasText:c && c['getContext'] && c.getContext('2d').fillText,
+            canvas:c ? 1 : 0, canvasText:( c && c.getContext('2d').fillText ) ? 1 : 0,
             audio:a ? 1 : 0,
             audioMp3:a && a['canPlayType'] && a.canPlayType('audio/mpeg;').indexOf('no') < 0 ? 1 : 0,
             audioOgg:a && a['canPlayType'] && a.canPlayType('audio/ogg;').indexOf('no') < 0 ? 1 : 0,
@@ -115,10 +117,10 @@ var bs = bs || {};
             videoWebm:v && v['canPlayType'] && v.canPlayType( 'video/webm; codecs="vp8,mp4a.40.2"' ).indexOf( 'no' ) == -1 ? 1 : 0,
             videH264:v && v['canPlayType'] && v.canPlayType( 'video/mp4; codecs="avc1.42E01E,m4a.40.2"' ).indexOf( 'no' ) == -1 ? 1 : 0,
             videoTeora:v && v['canPlayType'] && v.canPlayType( 'video/ogg; codecs="theora,vorbis"' ).indexOf( 'no' ) == -1 ? 1 : 0,
-            local:W.localStorage && 'setItem' in localStorage,
-            geo:navigator.geolocation, worker:W.Worker, file:W.FileReader, message:W.postMessage,
-            history:'pushState' in history, offline:W.applicationCache,
-            db:W.openDatabase, socket:W.WebSocket
+            local:( W['localStorage'] && 'setItem' in localStorage ) ? 1 : 0,
+            geo:( navigator['geolocation'] ) ? 1 : 0, worker:W['Worker'] ? 1 : 0, file:W['FileReader'] ? 1 : 0, message:W['postMessage'] ? 1 : 0,
+            history:( 'pushState' in history ) ? 1 : 0, offline:W['applicationCache'] ? 1 : 0,
+            db:W['openDatabase'] ? 1 : 0, socket:W['WebSocket'] ? 1 : 0
         } ) if( t0.hasOwnProperty(k) ) detect[k] = t0[k];
         return detect;
     };

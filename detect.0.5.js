@@ -126,7 +126,7 @@ detectDOM = function( W, detect ){
 };
 detectGPU = function( W, detect ){
     if( !detect ) detect = {};
-    var c = document.createElement('canvas'), t0, t1,
+    var c = document.createElement('canvas'), t0, t1, k,
         gl = c.getContext('webgl') || c.getContext('experimental-webgl') || c.getContext('webkit-3d') || c.getContext('moz-webgl'),
         getGLParam = function(k){ return gl.getParameter(gl[k]) };
     if (gl) {

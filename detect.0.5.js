@@ -126,27 +126,44 @@ detectDOM = function( W, detect ){
 };
 detectGPU = function( W, detect ){
     if( !detect ) detect = {};
-    var canvas = document.createElement('canvas')
-    var gl=canvas.getContext('webgl')||canvas.getContext("experimental-webgl")||canvas.getContext("webkit-3d")||canvas.getContext("moz-webgl")
-    var gpu = {enable : gl ? 1 : 0,contextAttributes: {}}
-    function infoFunc($t, $t2) {
-        $t2 ? $t2=gpu[$t2]={} : $t2=gpu
-        for(var i=0, l=$t.length; i < l; i++) $t2[$t[i]]=gl.getParameter(gl[$t[i]])
-    }
-    function glTest($gl) {
-        var t=$gl.getContextAttributes();
-        for(var i in t) gpu.contextAttributes[i]=t[i]
-        t=['VENDOR', 'VERSION', 'SHADING_LANGUAGE_VERSION', 'RENDERER'], infoFunc(t)
-        t=['MAX_VERTEX_ATTRIBS', 'MAX_VARYING_VECTORS', 'MAX_VERTEX_UNIFORM_VECTORS', 'MAX_VERTEX_TEXTURE_IMAGE_UNITS'], infoFunc(t, 'vertex')
-        t=['MAX_FRAGMENT_UNIFORM_VECTORS'], infoFunc(t, 'fragment')
-        t=['MAX_TEXTURE_SIZE', 'MAX_CUBE_MAP_TEXTURE_SIZE', 'MAX_COMBINED_TEXTURE_IMAGE_UNITS', 'MAX_TEXTURE_IMAGE_UNITS'], infoFunc(t, 'texture')
-        t=['MAX_RENDERBUFFER_SIZE', 'MAX_VIEWPORT_DIMS', 'RED_BITS', 'GREEN_BITS', 'BLUE_BITS', 'ALPHA_BITS', 'DEPTH_BITS', 'STENCIL_BITS'], infoFunc(t, 'renderBuffer')
-    }
-    gpu.enable ? glTest(gl) : null;
-    detect.gpu =gpu
-    console.log(detect)
+    var c = document.createElement('canvas'), t0, t1,
+        gl = c.getContext('webgl') || c.getContext('experimental-webgl') || c.getContext('webkit-3d') || c.getContext('moz-webgl'),
+        getGLParam = function(k){ return gl.getParameter(gl[k]) };
+    if (gl) {
+        t0 = gl.getContextAttributes();
+        detect.glEnabled = true;
+        for( k in t1 = {
+            glAlpha:t0['alpha'],
+            glAntialias:t0['antialias'],
+            glDepth:t0['depth'],
+            glPremultipliedAlpha:t0['premultipliedAlpha'],
+            glPreserveDrawingBuffer:t0['preserveDrawingBuffer'],
+            glStencil:t0['stencil'],
+            glVendor:getGLParam('VENDOR'),
+            glVersion:getGLParam('VERSION'),
+            glShadingLanguageVersion:getGLParam('SHADING_LANGUAGE_VERSION'),
+            glRenderer:getGLParam('RENDERER'),
+            glMaxVertexAttribs:getGLParam('MAX_VERTEX_ATTRIBS'),
+            glMaxVaryingVectors:getGLParam('MAX_VARYING_VECTORS'),
+            glMaxVertexUniformVectors:getGLParam('MAX_VERTEX_UNIFORM_VECTORS'),
+            glMaxVertexTextureImageUnits:getGLParam('MAX_VERTEX_TEXTURE_IMAGE_UNITS'),
+            glMaxFragmentUniformVectors:getGLParam('MAX_FRAGMENT_UNIFORM_VECTORS'),
+            glMaxTextureSize:getGLParam('MAX_TEXTURE_SIZE'),
+            glMaxCubeMapTextureSize:getGLParam('MAX_CUBE_MAP_TEXTURE_SIZE'),
+            glMaxCombinedTextureImageUnits:getGLParam('MAX_COMBINED_TEXTURE_IMAGE_UNITS'),
+            glMaxTextureImageUnits:getGLParam('MAX_TEXTURE_IMAGE_UNITS'),
+            glMaxRenderbufferSize:getGLParam('MAX_RENDERBUFFER_SIZE'),
+            glMaxViewportDims:getGLParam('MAX_VIEWPORT_DIMS'),
+            glRedBits:getGLParam('RED_BITS'),
+            glGreenBits:getGLParam('GREEN_BITS'),
+            glBlueBits:getGLParam('BLUE_BITS'),
+            glAlphaBits:getGLParam('ALPHA_BITS'),
+            glDepthBits:getGLParam('DEPTH_BITS'),
+            glStencilBits:getGLParam('STENCIL_BITS')
+        } ) if ( t1.hasOwnProperty(k) ) detect[k] = t1[k];
+    } else { detect.glEnabled = false; }
     return detect;
-}
+};
 
 // @test
 bs.detectWindow = detectWindow;

@@ -65,12 +65,11 @@ detectWindow = function( W, detect ){
         'device':device, 'browser':browser, 'browserVer':bv, 'os':os, 'osVer':osv, 'flash':flash, 'sony':agent.indexOf('sony') > -1 ? 1 : 0
     } ) if( t0.hasOwnProperty(i) ) detect[i] = t0[i];
     return detect;
-};
+},
 detectDOM = function( W, detect ){
     var doc = W['document'], cssPrefix, stylePrefix, transform3D, keyframe = W['CSSRule'], docMode = 0,
         b = doc.body, bStyle = b.style, div = doc.createElement('div'),
         c = doc.createElement('canvas'), a = doc.createElement('audio'), v = doc.createElement('video'), k, t0;
-
     if( !detect ) detect = {};
     if( !doc ) return detect;
     div.innerHTML = '<div data-test-ok="234">a</div>',
@@ -122,6 +121,20 @@ detectDOM = function( W, detect ){
         history:( 'pushState' in history ) ? 1 : 0, offline:W['applicationCache'] ? 1 : 0,
         db:W['openDatabase'] ? 1 : 0, socket:W['WebSocket'] ? 1 : 0
     } ) if( t0.hasOwnProperty(k) ) detect[k] = t0[k];
+	//gpu
+	c = doc.createElement('canvas');
+	if( gl = c.getContext('webgl') || c.getContext('experimental-webgl') || c.getContext('webkit-3d') || c.getContext('moz-webgl') ){
+		t0 = gl.getContextAttributes();
+		detect.glEnabled = 1;
+		t1 = 'alpha,antialias,depth,premultipliedAlpha,preserveDrawingBuffer,stencil'.split(',');
+		for( i = 0, j = t1.length ; i < j ; i++ ) k = t1[i], detect['gl' + k.charAt(0).toUpperCase() + k.substr(1)] = t0[k];
+		t0 = ( 'VENDOR,VERSION,SHADING_LANGUAGE_VERSION,RENDERER,MAX_VERTEX_ATTRIBS,MAX_VARYING_VECTORS,MAX_VERTEX_UNIFORM_VECTORS,'+
+			'MAX_VERTEX_TEXTURE_IMAGE_UNITS,MAX_FRAGMENT_UNIFORM_VECTORS,MAX_TEXTURE_SIZE,MAX_CUBE_MAP_TEXTURE_SIZE,'+
+			'MAX_COMBINED_TEXTURE_IMAGE_UNITS,MAX_TEXTURE_IMAGE_UNITS,MAX_RENDERBUFFER_SIZE,MAX_VIEWPORT_DIMS,'+
+			'RED_BITS,GREEN_BITS,BLUE_BITS,ALPHA_BITS,DEPTH_BITS,STENCIL_BITS' ).split(',');
+		r = /[_]\S/g, re = function(_0){return _0.charAt(1).toUpperCase();};
+		for( i = 0, j = t0.length ; i < j ; i++ ) k = t0[i], t1 = k.toLowerCase().replace( r, re ), detect['gl' + t1.charAt(0).toUpperCase() + t1.substr(1)] = gl.getParameter(gl[k]);
+	}else detect.glEnabled = 0;
     return detect;
 };
 

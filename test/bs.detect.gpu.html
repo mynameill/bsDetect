@@ -23,17 +23,16 @@
 <script src="http://projectbs.github.io/bsJSTest/0.3/printer.js"></script>
 <script>
     bs(function(){
-        var W=window,D = bs.detectWindow( W),t0
+        var W=window,D = bs.detectWindow( W),t0,strs=""
         D = bs.detectDOM( W, D );
-
-        bsTest.tear('Vendor - '+D.glVendor+'<br>Version - '+D.glVersion+'<br>ShadingLanguageVersion - '+D.glShadingLanguageVersion+'<br>Renderer - '+D.glRenderer,function(){ return D});
-        for(var k in D) if(k.substr(0,2) == 'gl') console.log(k,D[k])
+        for(var k in D) if(k.substr(0,2) == 'gl') strs+=k+" <span style='color:green'>"+D[k]+'</span><br>'
+        bsTest.tear('Vendor - '+D.glVendor+'<br>Version - '+D.glVersion+'<br>ShadingLanguageVersion - '+D.glShadingLanguageVersion+'<br>Renderer - '+D.glRenderer+'<br><br>'+strs,function(){});
         bsTest.tear('trueCheck',function(){});
-        var check='glEnabled,glAlpha,glAntialias,glDepth,glPremultipliedAlpha,glPreserveDrawingBuffer,glStencil'.split(',')
+        var check='glEnabled,glAlpha,glAntialias,glDepth,glPremultipliedAlpha,glPreserveDrawingBuffer,glStencil,glVERTEX_HIGH_FLOAT,glFRAGMENT_HIGH_FLOAT'.split(',')
         for(var i=0; i < check.length; i++){
             bsTest('trueCheck ' + (t0=check[i])+' = '+D[t0],function(){
                 return (D[t0] == 1 || D[t0] == 0) ? 'pass' : 'fail'
-            },'pass',t0,bsTest.IN(0,1),1)
+            },'pass')
         }
 
         function numberTest($title,$list){
@@ -41,7 +40,7 @@
             bsTest.tear($title,function(){});
             for(var i=0; i < t1.length; i++){
                 bsTest((t0=t1[i])+' = '+D[t0],function(){
-                    return (typeof(D[t0]) == 'number')  && D[t0] ? 'pass' : 'fail'
+                    return (typeof(D[t0]) == 'number') ? 'pass' : 'fail'
                 },'pass')
             }
         }
@@ -49,8 +48,7 @@
         numberTest('ImageUnit & Texture','glMaxVertexTextureImageUnits,glMaxTextureImageUnits,glMaxTextureSize,glMaxCubeMapTextureSize,glMaxCombinedTextureImageUnits'.split(','))
         numberTest('etc','glMaxRenderbufferSize,glRedBits,glGreenBits,glBlueBits,glAlphaBits,glDepthBits,glStencilBits'.split(','))
 
-
-        //TODO 실제 실행테스트까지 단행해야겠군 -_-;;
+        bsTest.tear('TODO - 실제 실행테스트 예정 ',function(){});
     });
 </script>
 </body>

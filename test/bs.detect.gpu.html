@@ -35,27 +35,21 @@
                 return (D[t0] == 1 || D[t0] == 0) ? 'pass' : 'fail'
             },'pass',t0,bsTest.IN(0,1),1)
         }
-        bsTest.tear('numberCheck -Vertex & Fragment',function(){});
-        var check='glMaxVertexAttribs,glMaxVaryingVectors,glMaxVertexUniformVectors,glMaxFragmentUniformVectors'.split(',')
-        for(var i=0; i < check.length; i++){
-            bsTest((t0=check[i])+' = '+D[t0],function(){
-                return (typeof(D[t0]) == 'number') ? 'pass' : 'fail'
-            },'pass')
+
+        function numberTest($title,$list){
+            var t1 = $list
+            bsTest.tear($title,function(){});
+            for(var i=0; i < t1.length; i++){
+                bsTest((t0=t1[i])+' = '+D[t0],function(){
+                    return (typeof(D[t0]) == 'number')  && D[t0] ? 'pass' : 'fail'
+                },'pass')
+            }
         }
-        bsTest.tear('ImageUnit & Texture',function(){});
-        var check='glMaxVertexTextureImageUnits,glMaxTextureImageUnits,glMaxTextureSize,glMaxCubeMapTextureSize,glMaxCombinedTextureImageUnits'.split(',')
-        for(var i=0; i < check.length; i++){
-            bsTest((t0=check[i])+' = '+D[t0],function(){
-                return (typeof(D[t0]) == 'number') ? 'pass' : 'fail'
-            },'pass')
-        }
-        bsTest.tear('etc',function(){});
-        var check='glMaxRenderbufferSize,glRedBits,glGreenBits,glBlueBits,glAlphaBits,glDepthBits,glStencilBits'.split(',')
-        for(var i=0; i < check.length; i++){
-            bsTest((t0=check[i])+' = '+D[t0],function(){
-                return (typeof(D[t0]) == 'number') ? 'pass' : 'fail'
-            },'pass')
-        }
+        numberTest('numberCheck -Vertex & Fragment','glMaxVertexAttribs,glMaxVaryingVectors,glMaxVertexUniformVectors,glMaxFragmentUniformVectors'.split(','))
+        numberTest('ImageUnit & Texture','glMaxVertexTextureImageUnits,glMaxTextureImageUnits,glMaxTextureSize,glMaxCubeMapTextureSize,glMaxCombinedTextureImageUnits'.split(','))
+        numberTest('etc','glMaxRenderbufferSize,glRedBits,glGreenBits,glBlueBits,glAlphaBits,glDepthBits,glStencilBits'.split(','))
+
+
         //TODO 실제 실행테스트까지 단행해야겠군 -_-;;
     });
 </script>

@@ -122,7 +122,7 @@ detectDOM = function( W, detect ){
         db:W['openDatabase'] ? 1 : 0, socket:W['WebSocket'] ? 1 : 0
     } ) if( t0.hasOwnProperty(k) ) detect[k] = t0[k];
 	//gpu
-    var keys,gl = {premultipliedAlpha:1,stencil:1,preserveDrawingBuffer:1}
+    var gl,keys = {premultipliedAlpha:1,stencil:1,preserveDrawingBuffer:1},t1, i, r,j
     c = doc.createElement('canvas');
     if( gl = c.getContext('webgl',keys) || c.getContext('experimental-webgl',keys) || c.getContext('webkit-3d',keys) || c.getContext('moz-webgl',keys) ){
 		t0 = gl.getContextAttributes();

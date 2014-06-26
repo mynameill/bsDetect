@@ -28,7 +28,8 @@
         for(var k in D) if(k.substr(0,2) == 'gl') strs+=k+" <span style='color:green'>"+D[k]+'</span><br>'
         bsTest.tear('Vendor - '+D.glVendor+'<br>Version - '+D.glVersion+'<br>ShadingLanguageVersion - '+D.glShadingLanguageVersion+'<br>Renderer - '+D.glRenderer+'<br><br>'+strs,function(){});
         bsTest.tear('trueCheck',function(){});
-        var check='glEnabled,glAlpha,glAntialias,glDepth,glPremultipliedAlpha,glPreserveDrawingBuffer,glStencil,glVERTEX_HIGH_FLOAT,glFRAGMENT_HIGH_FLOAT'.split(',')
+        var enable = D['glEnabled']
+        var check=enable ?'glEnabled,glAlpha,glAntialias,glDepth,glPremultipliedAlpha,glPreserveDrawingBuffer,glStencil,glVERTEX_HIGH_FLOAT,glFRAGMENT_HIGH_FLOAT'.split(',') : ['glEnabled']
         for(var i=0; i < check.length; i++){
             bsTest('trueCheck ' + (t0=check[i])+' = '+D[t0],function(){
                 return (D[t0] == 1 || D[t0] == 0) ? 'pass' : 'fail'
@@ -44,11 +45,13 @@
                 },'pass')
             }
         }
-        numberTest('numberCheck -Vertex & Fragment','glMaxVertexAttribs,glMaxVaryingVectors,glMaxVertexUniformVectors,glMaxFragmentUniformVectors'.split(','))
-        numberTest('ImageUnit & Texture','glMaxVertexTextureImageUnits,glMaxTextureImageUnits,glMaxTextureSize,glMaxCubeMapTextureSize,glMaxCombinedTextureImageUnits'.split(','))
-        numberTest('etc','glMaxRenderbufferSize,glRedBits,glGreenBits,glBlueBits,glAlphaBits,glDepthBits,glStencilBits'.split(','))
+        if(enable){
+            numberTest('numberCheck -Vertex & Fragment','glMaxVertexAttribs,glMaxVaryingVectors,glMaxVertexUniformVectors,glMaxFragmentUniformVectors'.split(','))
+            numberTest('ImageUnit & Texture','glMaxVertexTextureImageUnits,glMaxTextureImageUnits,glMaxTextureSize,glMaxCubeMapTextureSize,glMaxCombinedTextureImageUnits'.split(','))
+            numberTest('etc','glMaxRenderbufferSize,glRedBits,glGreenBits,glBlueBits,glAlphaBits,glDepthBits,glStencilBits'.split(','))
 
-        bsTest.tear('TODO - 실제 실행테스트 예정 ',function(){});
+            bsTest.tear('TODO - 실제 실행테스트 예정 ',function(){});
+        }
     });
 </script>
 </body>

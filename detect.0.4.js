@@ -122,8 +122,9 @@ detectDOM = function( W, detect ){
         db:W['openDatabase'] ? 1 : 0, socket:W['WebSocket'] ? 1 : 0
     } ) if( t0.hasOwnProperty(k) ) detect[k] = t0[k];
 	//gpu
-	c = doc.createElement('canvas');
-	if( gl = c.getContext('webgl') || c.getContext('experimental-webgl') || c.getContext('webkit-3d') || c.getContext('moz-webgl') ){
+    var keys,gl = {premultipliedAlpha:1,stencil:1,preserveDrawingBuffer:1}
+    c = doc.createElement('canvas');
+    if( gl = c.getContext('webgl',keys) || c.getContext('experimental-webgl',keys) || c.getContext('webkit-3d',keys) || c.getContext('moz-webgl',keys) ){
 		t0 = gl.getContextAttributes();
 		detect.glEnabled = 1;
 		t1 = 'alpha,antialias,depth,premultipliedAlpha,preserveDrawingBuffer,stencil'.split(',');

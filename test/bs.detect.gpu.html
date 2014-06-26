@@ -1,64 +1,63 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<title>detect-test</title>
-<meta charset="utf-8"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="format-detection" content="telephone=no" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,target-densitydpi=medium-dpi" />
+    <title>detect-test</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="viewport"
+          content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,target-densitydpi=medium-dpi"/>
+    <style>
+        div {font-size:11px}
+    </style>
 </head>
 <body>
 <div id="stage"></div>
 <div id="result"></div>
 <div id="test"></div>
-<script src="../../bsJS/bsjs.0.4.js"></script>
-<script src="../../bsJSTest/bsTest.js"></script>
-<script src="../../bsJSTest/0.3/printer.js"></script>
-<script src="../detect.0.5.js"></script>
-<script src="js/jquery-2.1.0.js"></script>
-<script src="js/jquery.browser.js"></script>
+<script src="http://projectbs.github.io/bsJS/bsjs.0.4.js"></script>
+<script src="../detect.0.4.js"></script>
+<script src="http://projectbs.github.io/bsJSTest/bsTest.js"></script>
+<script src="http://projectbs.github.io/bsJSTest/0.3/printer.js"></script>
 <script>
-var W = window;
-bs( function(){
-    var detect = bs.detectWindow( W ), jb = $.browser, k, arg = ['DETECT List'],argGPU = ['GPU DETECT List'];
-    detect = bs.detectDOM( W, detect );
-    detect = bs.detectGPU( W, detect );
-    bsTest.tear( navigator.userAgent + '::' + navigator.platform + '::' + navigator.appVersion,
-    function() {
-/* navigator.userAgent :: navigator.platform :: navigator.appVersion */
-        jqueryStr = function( origin ) {
-            switch ( origin ) {
-                case 'mozilla': return 'firefox';
-                case 'msie': return 'ie';
-                case 'android':
-                case 'webkit': return bsTest.IN( 'chrome', 'iphone', 'ipad', 'android', 'androidTablet', 'naver' );
-                case 'unix': return bsTest.IN( 'unix', 'linux' );
-                default: return origin;
-            }
-        }
-    } );
-    for ( k in detect ) {
-        arg.push( k, bsTest.NOT( 'null' ), detect[k] + '' );
-    }
-    bsTest.apply( null, arg );
+    bs(function(){
+        var W=window,D = bs.detectWindow( W),t0
+        D = bs.detectDOM( W, D );
 
-    for ( k in detect.gpu ) {
-        argGPU.push( k, bsTest.NOT( 'null' ), detect.gpu[k] + '' );
-        if(typeof detect.gpu[k] == 'object'){
-            for ( var j in detect.gpu[k] ) {
-                argGPU.push( j, bsTest.NOT( 'null' ), detect.gpu[k][j] + '' );
-            }
+        bsTest.tear('Vendor - '+D.glVendor+'<br>Version - '+D.glVersion+'<br>ShadingLanguageVersion - '+D.glShadingLanguageVersion+'<br>Renderer - '+D.glRenderer,function(){ return D});
+        for(var k in D) if(k.substr(0,2) == 'gl') console.log(k,D[k])
+        bsTest.tear('trueCheck',function(){});
+        var check='glEnabled,glAlpha,glAntialias,glDepth,glPremultipliedAlpha,glPreserveDrawingBuffer,glStencil'.split(',')
+        for(var i=0; i < check.length; i++){
+            bsTest('trueCheck ' + (t0=check[i])+' = '+D[t0],function(){
+                return (D[t0] == 1 || D[t0] == 0) ? 'pass' : 'fail'
+            },'pass',t0,bsTest.IN(0,1),1)
         }
-    }
-    bsTest.apply( null, argGPU );
-    bsTest( 'DETECT jQuery.browser',
-            'browser', jqueryStr( jb.name ), detect.browser,
-            'os', jb.platform || 'unix', detect.os,
-            'browserVer', jb.versionNumber, detect.browserVer
-    );
-} );
+        bsTest.tear('numberCheck -Vertex & Fragment',function(){});
+        var check='glMaxVertexAttribs,glMaxVaryingVectors,glMaxVertexUniformVectors,glMaxFragmentUniformVectors'.split(',')
+        for(var i=0; i < check.length; i++){
+            bsTest((t0=check[i])+' = '+D[t0],function(){
+                return (typeof(D[t0]) == 'number') ? 'pass' : 'fail'
+            },'pass')
+        }
+        bsTest.tear('ImageUnit & Texture',function(){});
+        var check='glMaxVertexTextureImageUnits,glMaxTextureImageUnits,glMaxTextureSize,glMaxCubeMapTextureSize,glMaxCombinedTextureImageUnits'.split(',')
+        for(var i=0; i < check.length; i++){
+            bsTest((t0=check[i])+' = '+D[t0],function(){
+                return (typeof(D[t0]) == 'number') ? 'pass' : 'fail'
+            },'pass')
+        }
+        bsTest.tear('etc',function(){});
+        var check='glMaxRenderbufferSize,glRedBits,glGreenBits,glBlueBits,glAlphaBits,glDepthBits,glStencilBits'.split(',')
+        for(var i=0; i < check.length; i++){
+            bsTest((t0=check[i])+' = '+D[t0],function(){
+                return (typeof(D[t0]) == 'number') ? 'pass' : 'fail'
+            },'pass')
+        }
+        //TODO 실제 실행테스트까지 단행해야겠군 -_-;;
+    });
 </script>
 </body>
 </html>

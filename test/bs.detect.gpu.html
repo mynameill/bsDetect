@@ -25,16 +25,19 @@
     bs(function(){
         var W=window,D = bs.detectWindow( W),t0,strs=""
         D = bs.detectDOM( W, D );
-        for(var k in D) if(k.substr(0,2) == 'gl') strs+=k+" <span style='color:green'>"+D[k]+'</span><br>'
-        bsTest.tear('Vendor - '+D.glVendor+'<br>Version - '+D.glVersion+'<br>ShadingLanguageVersion - '+D.glShadingLanguageVersion+'<br>Renderer - '+D.glRenderer+'<br><br>'+strs,function(){});
-        bsTest.tear('trueCheck',function(){});
         var enable = D['glEnabled']
         var check=enable ?'glEnabled,glAlpha,glAntialias,glDepth,glPremultipliedAlpha,glPreserveDrawingBuffer,glStencil,glVERTEX_HIGH_FLOAT,glFRAGMENT_HIGH_FLOAT'.split(',') : ['glEnabled']
+        if(enable){
+            for(var k in D) if(k.substr(0,2) == 'gl') strs+=k+" <span style='color:green'>"+D[k]+'</span><br>'
+            bsTest.tear('Vendor - '+D.glVendor+'<br>Version - '+D.glVersion+'<br>ShadingLanguageVersion - '+D.glShadingLanguageVersion+'<br>Renderer - '+D.glRenderer+'<br><br>'+strs,function(){});
+            bsTest.tear('trueCheck',function(){});
+        }
         for(var i=0; i < check.length; i++){
             bsTest('trueCheck ' + (t0=check[i])+' = '+D[t0],function(){
                 return (D[t0] == 1 || D[t0] == 0) ? 'pass' : 'fail'
             },'pass')
         }
+
 
         function numberTest($title,$list){
             var t1 = $list

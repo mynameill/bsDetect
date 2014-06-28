@@ -20,7 +20,6 @@
 <script src="http://projectbs.github.io/bsJS/bsjs.0.4.js"></script>
 <script src="../detect.0.4.js"></script>
 <script src="http://projectbs.github.io/bsJSTest/bsTest.js"></script>
-
 <script src="http://projectbs.github.io/bsJSTest/0.3/printer.js"></script>
 <script>
     bs(function(){
@@ -46,7 +45,7 @@
                 bsTest((t0=t1[i])+' = '+t2,function(){
                     return isNumber(t2) ? 'pass' : 'fail'
                 },'pass',function(){
-                    return isNull ? 'pass' : 'fail'
+                    return isNull(t2) ? 'fail' : 'pass'
                 },'pass',function(){
                     return isNaturalNumber(t2) ? 'pass' : 'fail'
                 },'pass',function(){
@@ -57,11 +56,11 @@
             }
         }
         function isInt($t){
-            return ($t === parseInt($t)) ? 1 : 0
+            return ($t == parseInt($t)) ? 1 : 0
         }
 
         function isNull($t){
-            return (typeof($t) == null) ? 1 : 0
+            return ($t == null) ? 1 : 0
         }
 
         function isNumber($t){

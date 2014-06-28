@@ -19,7 +19,8 @@
 <div id="test"></div>
 <script src="http://projectbs.github.io/bsJS/bsjs.0.4.js"></script>
 <script src="../detect.0.4.js"></script>
-<script src="http://projectbs.github.io/bsJSTest/bsTest.js"></script>
+<!--<script src="http://projectbs.github.io/bsJSTest/bsTest.js"></script>-->
+<script src="../bsTest.js"></script>
 <script src="http://projectbs.github.io/bsJSTest/0.3/printer.js"></script>
 <script>
     bs(function(){
@@ -43,15 +44,32 @@
             for(var i=0; i < t1.length; i++){
                 t2=D[t0]
                 bsTest((t0=t1[i])+' = '+t2,function(){
-                    return (typeof(t2) == 'number') ? 'pass' : 'fail'
+                    return isNumber(t2) ? 'pass' : 'fail'
                 },'pass',function(){
-                    return (typeof(t2) != null) ? 'pass' : 'fail'
+                    return isNull ? 'pass' : 'fail'
                 },'pass',function(){
-                    return (t2 >= 0) ? 'pass' : 'fail'
+                    return isNaturalNumber(t2) ? 'pass' : 'fail'
                 },'pass',function(){
                     return isNaN(t2) ? 'fail' : 'pass'
+                },'pass',function(){
+                    return isInt(t2) ? 'pass' : 'fail'
                 },'pass')
             }
+        }
+        function isInt($t){
+            return ($t === parseInt($t)) ? 1 : 0
+        }
+
+        function isNull($t){
+            return (typeof($t) == null) ? 1 : 0
+        }
+
+        function isNumber($t){
+            return (typeof($t) == 'number') ? 1 : 0
+        }
+
+        function isNaturalNumber($t){
+            return ($t >= 0) ? 1 : 0
         }
 
         if(enable){

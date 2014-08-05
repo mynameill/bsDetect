@@ -42,7 +42,11 @@ detectWindow = function( W, detect ){
 		else if( ( t0 = plug['Shockwave Flash 2.0'] ) || ( t0 = plug['Shockwave Flash'] ) ) t0 = t0.description.split(' ')[2].split('.'), flash = parseFloat( t0[0] + '.' + t0[1] );
 		else if( agent.indexOf('webtv') > -1 ) flash = agent.indexOf('webtv/2.6') > -1 ? 4 : agent.indexOf("webtv/2.5") > -1 ? 3 : 2;
 	})();
-	for( i in t0 = {device:device, browser:browser, browserVer:bv, os:os, osVer:osv, flash:flash, sony:agent.indexOf('sony') > -1 ? 1 : 0} ) if( t0.hasOwnProperty(i) ) detect[i] = t0[i];
+	for( i in t0 = {
+		file:W['FileReader'] ? 1 : 0, message:W['postMessage'] ? 1 : 0, local:( W['localStorage'] && 'setItem' in localStorage ) ? 1 : 0,
+		db:W['openDatabase'] ? 1 : 0, socket:W['WebSocket'] ? 1 : 0, geo:( navigator['geolocation'] ) ? 1 : 0, history:( 'pushState' in history ) ? 1 : 0, offline:W['applicationCache'] ? 1 : 0,
+		device:device, browser:browser, browserVer:bv, os:os, osVer:osv, flash:flash, sony:agent.indexOf('sony') > -1 ? 1 : 0
+	} ) if( t0.hasOwnProperty(i) ) detect[i] = t0[i];
 	return detect;
 },
 detectDOM = function( W, detect ){
@@ -52,7 +56,7 @@ detectDOM = function( W, detect ){
 	case'ie':
 		cssPrefix = '-ms-', stylePrefix = 'ms', docMode = doc['documentMode'] || 0;
 		if( detect.browserVer == 6 ) doc.execCommand( 'BackgroundImageCache', false, true ), bStyle.position = 'relative';
-		else if( detect.browserVer == -1 ) detect.browserVer = !c['getContext'] ? 8 : !( 'msTransition' in bStyle ) && !( 'transition' in bStyle ) ? 9 : c.getContext('webgl') ? 11 : 10;
+		else if( detect.browserVer == -1 ) detect.browserVer = !( t0 = doc.createElement('canvas') )['getContext'] ? 8 : !( 'msTransition' in bStyle ) && !( 'transition' in bStyle ) ? 9 : t0.getContext('webgl') ? 11 : 10;
 		break;
 	case'firefox': cssPrefix = '-moz-', stylePrefix = 'Moz';break;
 	case'opera': cssPrefix = '-o-', stylePrefix = 'O';break;
@@ -68,11 +72,7 @@ detectDOM = function( W, detect ){
 		var c = doc.createElement('canvas'), a = doc.createElement('audio'), v = doc.createElement('video'), r, re, gl, keys, t0, t1, i, j, k,
 		c1 = c && c['getContext'] && c.getContext('2d') ? 1 : 0, a1 = a && a['canPlayType'] ? 1 : 0, v1 = v && v['canPlayType'] ? 1 : 0;
 		for( k in t0 = {
-			canvas:c1, audio:a1, video:v1, worker:W['Worker'] ? 1 : 0, file:W['FileReader'] ? 1 : 0, message:W['postMessage'] ? 1 : 0,
-			local:( W['localStorage'] && 'setItem' in localStorage ) ? 1 : 0,
-			geo:( navigator['geolocation'] ) ? 1 : 0,
-			history:( 'pushState' in history ) ? 1 : 0, offline:W['applicationCache'] ? 1 : 0,
-			db:W['openDatabase'] ? 1 : 0, socket:W['WebSocket'] ? 1 : 0,
+			canvas:c1, audio:a1, video:v1, worker:W['Worker'] ? 1 : 0,
 			canvasText:c1 && c.getContext('2d').fillText ? 1 : 0,
 			videoCaption:'track' in doc.createElement('track') ? 1 : 0,
 			videoPoster:v1 && 'poster' in v ? 1 : 0

@@ -26,7 +26,7 @@ detectWindow = function( W, detect ){
 		device = i == 'ipad' ? 'tablet' : 'mobile', browser = os = i, osv = ( i = /os ([\d_]+)/.exec(agent) ) ? ( i = i[1].split('_'), parseFloat( i[0] + '.' + i[1] ) ) : 0,
 		naver() || opera() || chrome() || firefox() || ( bv = ( i = /mobile\/([\S]+)/.exec(agent) ) ? parseFloat(i[1]) : 0 );
 	}else if( platform.indexOf('win') > -1 ){
-		for( i in t0 = {'5.1':'xp', '6.0':'vista','6.1':'7','6.2':'8','6.3':'8.1'} ){
+		for( i in t0 = {'5.1':'xp', '6.0':'vista','6.1':'7','6.2':'8','6.3':'8.1','6.4':'10'} ){
 			if( agent.indexOf( 'windows nt ' + i ) > -1 ){
 				osv = t0[i];
 				break;

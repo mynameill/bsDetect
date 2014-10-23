@@ -44,6 +44,7 @@ detectWindow = function( W, detect ){
 	})();
 	for( i in t0 = {
 		file:W['FileReader'] ? 1 : 0, message:W['postMessage'] ? 1 : 0, local:( W['localStorage'] && 'setItem' in localStorage ) ? 1 : 0,
+		xhr2:W['XMLHttpRequest'] && 'responseType' in new XMLHttpRequest ? 1 : 0,
 		db:W['openDatabase'] ? 1 : 0, socket:W['WebSocket'] ? 1 : 0, geo:( navigator['geolocation'] ) ? 1 : 0, history:( 'pushState' in history ) ? 1 : 0, offline:W['applicationCache'] ? 1 : 0,
 		device:device, browser:browser, browserVer:bv, os:os, osVer:osv, flash:flash, sony:agent.indexOf('sony') > -1 ? 1 : 0
 	} ) if( t0.hasOwnProperty(i) ) detect[i] = t0[i];
